@@ -1,6 +1,6 @@
 package main
 
-import(
+import (
 	"log"
 	"net/http"
 )
@@ -15,3 +15,4 @@ func main() {
 	log.Print("starting server on :4000")
 	err := http.ListenAndServe(":4000", mux)
 	log.Fatal(err)
+}
