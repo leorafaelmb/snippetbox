@@ -3,6 +3,7 @@ package main
 import (
 	"database/sql"
 	"flag"
+	"fmt"
 	"log/slog"
 	"net/http"
 	"os"
@@ -16,7 +17,8 @@ type application struct {
 
 func main() {
 	addr := flag.String("addr", ":4000", "HTTP network address")
-	dsn := flag.String("dsn", "web:pass@/snippetbox?parseTime=true", "MySQL data source name")
+	dbCreds := os.Getenv("SB_DB_CREDS")
+	dsn := flag.String("dsn", fmt.Sprintf("%s@/snippetbox?parseTime=true", dbCreds), "MySQL data source name")
 	flag.Parse()
 	logger := slog.New(slog.NewTextHandler(os.Stdout, nil))
 
