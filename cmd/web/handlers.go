@@ -43,9 +43,10 @@ func (app *application) snippetView(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		if errors.Is(err, models.ErrNoRecord) {
 			http.NotFound(w, r)
+		} else {
+			app.serverError(w, r, err)
 		}
-	} else {
-		app.serverError(w, r, err)
+		return
 	}
 	fmt.Fprintf(w, "%+v", snippet)
 }
