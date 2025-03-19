@@ -152,8 +152,16 @@ func (app *application) postUserSignup(w http.ResponseWriter, r *http.Request) {
 
 }
 
+type userLoginForm struct {
+	Email               string `form:"email"`
+	Password            string `form:"password"`
+	validator.Validator `form:"-"`
+}
+
 func (app *application) getUserLogin(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "Display a form for logging in a user...")
+	data := app.newTemplateData(r)
+	data.Form = userLoginForm{}
+	app.render(w, r, http.StatusOK, "login.tmpl", data)
 }
 
 func (app *application) postUserLogin(w http.ResponseWriter, r *http.Request) {
