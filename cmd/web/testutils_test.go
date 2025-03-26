@@ -4,15 +4,27 @@ import (
 	"bytes"
 	"github.com/alexedwards/scs/v2"
 	"github.com/go-playground/form/v4"
+	"html"
 	"io"
 	"log/slog"
 	"net/http"
 	"net/http/cookiejar"
 	"net/http/httptest"
+	"regexp"
 	"snippetbox.leorafaelmb.net/internal/models/mocks"
 	"testing"
 	"time"
 )
+
+var csrfTokenRX = regexp.MustCompile(`<input type='hidden' name='csrf_token' value='(.+)'`)
+
+func extractCSRFToken(t *testing.T, body string) string {
+	matches := csrfTokenRX.FindStringSubmatch(body)
+	if len(matches) < 2 {
+		t.Fatal("no csrf token found in body")
+	}
+	return html.UnescapeString(matches[1])
+}
 
 func newTestApplication(t *testing.T) *application {
 	templateCache, err := newTemplateCache()
