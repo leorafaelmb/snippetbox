@@ -16,7 +16,7 @@ import (
 	"time"
 )
 
-var csrfTokenRX = regexp.MustCompile(`<input type='hidden' name='csrf_token' value='(.+)'`)
+var csrfTokenRX = regexp.MustCompile(`<input type="hidden" name="csrf_token" value="(.+)">`)
 
 func extractCSRFToken(t *testing.T, body string) string {
 	matches := csrfTokenRX.FindStringSubmatch(body)
